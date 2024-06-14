@@ -3,6 +3,7 @@
         "codemirror",
         "lezer",
         "lucide",
-        "reduxjs"
+        "reduxjs",
+        "tailwindcss"
     ]
 }
