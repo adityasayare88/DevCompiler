@@ -9,5 +9,5 @@ app.get("/", (req, res) => {
     return res.status(200).send("ok");
 });
 app.listen(4000, () => {
-    console.log("http://localhost:4000");
+    console.log("https://localhost:4000");
 });
