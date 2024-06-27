@@ -9,7 +9,6 @@ export interface CompilerSliceStateType {
     java: string;
   };
   currentLanguage: "html" | "css" | "javascript" | "java" | "python";
-  currentCode: string;
 }
 
 const initialState: CompilerSliceStateType = {
@@ -141,7 +140,6 @@ function addTask(taskText) {
     java: "this is java code",
   },
   currentLanguage: "html",
-  currentCode: "",
 };
 
 const compilerSlice = createSlice({
@@ -153,47 +151,18 @@ const compilerSlice = createSlice({
       action: PayloadAction<CompilerSliceStateType["currentLanguage"]>
     ) => {
       state.currentLanguage = action.payload;
-      state.currentCode = state.fullCode[action.payload];
     },
-    updateCodeValue: (
+    updateCodeValue: (state, action: PayloadAction<string>) => {
+      state.fullCode[state.currentLanguage] = action.payload;
+    },
+    updateFullCode: (
       state,
-      action: PayloadAction<{
-        language: CompilerSliceStateType["currentLanguage"];
-        code: string;
-      }>
+      action: PayloadAction<CompilerSliceStateType["fullCode"]>
     ) => {
-      const { code, language } = action.payload;
-      state.fullCode[language] = code;
-    },
-    updateCurrentCode: (state, action: PayloadAction<string>) => {
-      state.currentCode = action.payload;
-    },
-    updateHTML: (state, action: PayloadAction<string>) => {
-      state.fullCode.html = action.payload;
-    },
-    updateCSS: (state, action: PayloadAction<string>) => {
-      state.fullCode.css = action.payload;
-    },
-    updateJS: (state, action: PayloadAction<string>) => {
-      state.fullCode.javascript = action.payload;
-    },
-    updatePYTHON: (state, action: PayloadAction<string>) => {
-      state.fullCode.python = action.payload;
-    },
-    updateJAVA: (state, action: PayloadAction<string>) => {
-      state.fullCode.java = action.payload;
+      state.fullCode = action.payload;
     },
   },
 });
 
 export default compilerSlice.reducer;
-export const {
-  updateCurrentLanguage,
-  updateCodeValue,
-  updateCurrentCode,
-  updateHTML,
-  updateCSS,
-  updateJS,
-  updatePYTHON,
-  updateJAVA,
-} = compilerSlice.actions;
+export const { updateCurrentLanguage, updateCodeValue, updateFullCode } = compilerSlice.actions;
