@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
+interface IUserSchema {
+  username:string
+  email:string
+  password:string
+  picture:string
+  savedCodes:Array<mongoose.Types.ObjectId>
+}
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema<IUserSchema>(
   {
     username: {
       type: String,

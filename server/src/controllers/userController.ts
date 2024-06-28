@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { User } from "../models/User";
 
 //const User = require("../models/User");
 //const bcrypt = require("bcrypt");
 //const jwt = require("jsonwebtoken");
 
-exports.signup = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email: email });
@@ -26,7 +27,7 @@ exports.signup = async (req: Request, res: Response) => {
   }
 };
 
-exports.login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email: email });
@@ -49,7 +50,7 @@ exports.login = async (req: Request, res: Response) => {
         _id: existingUser._id,
         email: existingUser.email,
       },
-      process.env.JWT_KEY
+      process.env.JWT_KEY!
     );
 
     res.cookie("token", jwtToken, {
@@ -65,7 +66,7 @@ exports.login = async (req: Request, res: Response) => {
   }
 };
 
-exports.logout = async (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
   try {
     res.clearCookie("token");
     return res.status(200).send({ message: "logged out successfully!" });
