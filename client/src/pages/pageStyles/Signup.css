@@ -1,0 +1,16 @@
+/* Add styles for .signup-container to ensure it covers the full viewport */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw; /* Full viewport width */
+  height: calc(100vh - 60px); /* Full viewport height minus 60px */
+  background-color: #111111;
+  background-image: linear-gradient(
+    32deg,
+    rgba(8, 8, 8, 0.74) 30px,
+    transparent
+  );
+  background-size: 60px 60px;
+  background-position: -5px -5px;
+}

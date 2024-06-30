@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 
 export default function Home() {
   return (
@@ -8,9 +10,11 @@ export default function Home() {
         Code, Compile, Run and share your code seamlessly
       </p>
       <div className="flex space-x-4">
+      <Link to="/signup">
         <button className="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-lg shadow-md hover:bg-indigo-200 transition duration-300">
           Get Started
         </button>
+        </Link>
         <button className="px-6 py-3 bg-white text-blue-700 font-semibold rounded-lg shadow-md hover:bg-blue-200 transition duration-300">
           Learn More
         </button>
