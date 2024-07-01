@@ -71,7 +71,7 @@ export const Login = () => {
           </form>
         </Form>
         <small className="text-xs font-mono">
-          Already have an account ? <Link className="text-blue-500" to="/login">Login</Link>.
+          Don't have an account ? <Link className="text-blue-500" to="/signup">Signup</Link>.
         </small>
       </div>
     </div>

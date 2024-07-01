@@ -21,7 +21,7 @@ const formSchema = z.object({
   username: z.string(),
 });
 
-export default function Signup() {
+export const Signup = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
