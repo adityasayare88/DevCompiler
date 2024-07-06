@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
+import { AuthRequest } from "../middlewares/verifyToken";
 //import { AuthRequest } from "../middlewares/verifyToken";
 
 export const signup = async (req: Request, res: Response) => {

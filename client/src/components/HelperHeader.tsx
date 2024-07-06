@@ -33,8 +33,9 @@ export default function HelperHeader() {
   const fullCode = useSelector(
     (state: RootState) => state.compilerSlice.fullCode
   );
-  const [saveCode, { isLoading,error }] = useSaveCodeMutation();
+  const [saveCode, { isLoading, error }] = useSaveCodeMutation();
   const { urlId } = useParams();
+
   useEffect(() => {
     if (urlId) {
       setShareBtn(true);
@@ -42,6 +43,7 @@ export default function HelperHeader() {
       setShareBtn(false);
     }
   }, [urlId]);
+
   const handleSaveCode = async () => {
     try {
       const response = await saveCode(fullCode).unwrap();
@@ -50,39 +52,38 @@ export default function HelperHeader() {
       handleError(error);
     }
   };
+
   const dispatch = useDispatch();
   const currentLanguage = useSelector(
     (state: RootState) => state.compilerSlice.currentLanguage
   );
+
   return (
     <div className="__helper_header h-[50px] bg-black text-white p-2 flex justify-between items-center">
       <div className="__btn_container flex gap-2.5">
         <Button
           onClick={handleSaveCode}
-          className="flex justify-between items-center gap-2"
+          className="flex justify-center items-center gap-2"
           variant="success"
           disabled={isLoading}
+          size="icon"
         >
           {isLoading ? (
             <>
-              <LoaderCircle className="animate-spin" /> Saving
+              <LoaderCircle className="animate-spin" /> <span>Saving</span>
             </>
           ) : (
-            <>
-              <Save size={16} />
-              Save
-            </>
+            <Save size={16} />
           )}
         </Button>
         {shareBtn && (
           <Dialog>
-            <DialogTrigger className="whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-4 py-2 flex justify-between items-center gap-1">
+            <DialogTrigger className="whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-1 py-1 flex justify-between items-center gap-1">
               <Button
                 className="flex justify-between items-center gap-1"
                 variant="secondary"
               >
                 <Share2 size={16} />
-                Share
               </Button>
             </DialogTrigger>
             <DialogContent>
