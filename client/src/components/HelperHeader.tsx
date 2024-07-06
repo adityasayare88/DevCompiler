@@ -14,7 +14,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store"; // Adjust the path accordingly
 import { handleError } from "@/utils/handleError";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -26,14 +25,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useSaveCodeMutation } from "@/redux/slices/api";
 
 export default function HelperHeader() {
-  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [shareBtn, setShareBtn] = useState<boolean>(false);
   const navigate = useNavigate();
   const fullCode = useSelector(
     (state: RootState) => state.compilerSlice.fullCode
   );
+  const [saveCode, { isLoading,error }] = useSaveCodeMutation();
   const { urlId } = useParams();
   useEffect(() => {
     if (urlId) {
@@ -43,17 +43,11 @@ export default function HelperHeader() {
     }
   }, [urlId]);
   const handleSaveCode = async () => {
-    setSaveLoading(true);
     try {
-      const response = await axios.post("http://localhost:4000/compiler/save", {
-        fullCode: fullCode,
-      });
-      console.log(response.data);
-      navigate(`/compiler/${response.data.url}`, { replace: true });
+      const response = await saveCode(fullCode).unwrap();
+      navigate(`/compiler/${response.url}`, { replace: true });
     } catch (error) {
       handleError(error);
-    } finally {
-      setSaveLoading(false);
     }
   };
   const dispatch = useDispatch();
@@ -67,9 +61,9 @@ export default function HelperHeader() {
           onClick={handleSaveCode}
           className="flex justify-between items-center gap-2"
           variant="success"
-          disabled={saveLoading}
+          disabled={isLoading}
         >
-          {saveLoading ? (
+          {isLoading ? (
             <>
               <LoaderCircle className="animate-spin" /> Saving
             </>
