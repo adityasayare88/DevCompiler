@@ -7,3 +7,7 @@ build/
 
 # Environment variables
 .env
+
+# Mongo DB and JWT keys
+MONGO_URI
+JWT_KEY
