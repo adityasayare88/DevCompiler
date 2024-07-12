@@ -1,4 +1,3 @@
-//import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,17 +10,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import "./pageStyles/Signup.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { handleError } from "@/utils/handleError";
+import { useDispatch } from "react-redux";
+import { updateCurrentUser, updateIsLoggedIn } from "@/redux/slices/appSlice";
+import { useSignupMutation } from "@/redux/slices/api"; // Uncomment this line
 
 const formSchema = z.object({
-  userId: z.string(),
+  username: z.string(),
   email: z.string().email(),
   password: z.string(),
-  username: z.string(),
 });
 
-export const Signup = () => {
+export default function Signup() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [signup, { isLoading }] = useSignupMutation(); // Uncomment this line
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,28 +34,43 @@ export const Signup = () => {
       password: "",
     },
   });
-  function handleSignup(values: z.infer<typeof formSchema>) {
-    console.log(values);
+
+  async function handleSignup(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await signup(values).unwrap();
+      dispatch(updateCurrentUser(response));
+      dispatch(updateIsLoggedIn(true));
+      navigate("/");
+    } catch (error) {
+      handleError(error);
+    }
   }
+
   return (
-    <div className="___signup signup-container w-full h-[calc(100dvh-60px)] flex justify-center items-center flex-col gap-3 space-y-4">
-      <div className="__form_container bg-blur border-[1px] py-8 px-8 flex flex-col gap-5 w-[300px]">
-        <div className="">
-          <h1 className="text-4xl font-bold text-left">Signup</h1>
-          <p className="font-mono">Join the Community of Coders.</p>
+    <div className="__signup grid-bg w-full h-[calc(100dvh-60px)] flex justify-center items-center flex-col gap-3">
+      <div className="__form_container bg-black border-[1px] py-8 px-4 flex flex-col gap-5 w-[300px]">
+        <div>
+          <h1 className="font-mono text-4xl font-bold text-left">Signup</h1>
+          <p className="font-mono text-xs">
+            Join the community of expert frontend developers🧑‍💻.
+          </p>
         </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSignup)}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-2"
           >
             <FormField
               control={form.control}
-              name="userId"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Username"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,7 +82,12 @@ export const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input
+                      disabled={isLoading}
+                      type="email"
+                      placeholder="Email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,19 +99,28 @@ export const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      disabled={isLoading}
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button loading={isLoading} className="w-full" type="submit">
               Signup
             </Button>
           </form>
         </Form>
         <small className="text-xs font-mono">
-          Already have an account ? <Link className="text-blue-500" to="/login">Login</Link>.
+          Already have an account?{" "}
+          <Link className="text-blue-500" to="/login">
+            Login
+          </Link>
+          .
         </small>
       </div>
     </div>

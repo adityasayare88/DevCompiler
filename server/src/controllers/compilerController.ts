@@ -4,7 +4,11 @@ import { fullCodeType } from "../types/compilerTypes";
 
 export const saveCode = async (req: Request, res: Response) => {
   const fullCode: fullCodeType = req.body;
-  if (fullCode.html && !fullCode.css && !fullCode.javascript) {
+
+  if(req.){
+
+  }
+  if (!fullCode.html && !fullCode.css && !fullCode.javascript) {
     return res.status(400).send({ message: "Code cannot be blank 🤷‍♂️" });
   }
   try {

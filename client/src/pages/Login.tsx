@@ -22,7 +22,7 @@ const formSchema = z.object({
   userId: z.string(),
   password: z.string(),
 });
-export const Login = () => {
+export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
