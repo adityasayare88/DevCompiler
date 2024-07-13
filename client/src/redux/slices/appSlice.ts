@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface appSliceState {
+  [x: string]: any;
   currentUser: {
     username?: string;
     picture?: string;
